@@ -1,0 +1,13 @@
+version: '3.8'
+
+networks:
+  app:
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: npm run start
+    networks:
+      - app
