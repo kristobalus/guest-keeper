@@ -2,12 +2,12 @@
 const axios = require('axios');
 const restify = require('restify');
 const pino = require('pino');
+const fs = require('fs');
 
 const TW_CONSUMER_KEY = '3nVuSoBZnx6U4vzUxf5w'
 const TW_CONSUMER_SECRET = 'Bcs59EFbbsdF6Sl9Ng71smgStWEGwXXKSjYvPVt7qys'
 const TW_ANDROID_BASIC_TOKEN = `Basic ${btoa(TW_CONSUMER_KEY+':'+TW_CONSUMER_SECRET)}`
 
-const accounts = []
 const MAX_ACCOUNTS = 10;
 const LOOP_INTERVAL_MS = 3_600_000;
 const BACKOFF_INTERVAL = 86_400_000;
@@ -20,6 +20,13 @@ const log = pino({
         target: "pino-pretty"
     }
 })
+
+let accounts
+try {
+    accounts = JSON.parse(fs.readFileSync('accounts.json').toString("utf-8"))
+} catch (err) {
+    accounts = []
+}
 
 function getRandomProxy() {
     const pos = Math.round(Math.random() * (proxies.length - 1))
@@ -159,6 +166,7 @@ async function loop() {
         if (accounts.length > MAX_ACCOUNTS) {
             accounts.shift()
         }
+        fs.writeFileSync('accounts.json', JSON.stringify(accounts))
         log.debug(`...successfully fetched guest account, next loop in ${LOOP_INTERVAL_MS} millis`)
         setTimeout(loop, LOOP_INTERVAL_MS)
     } else {
