@@ -2,6 +2,7 @@
 const axios = require('axios');
 const restify = require('restify');
 const pino = require('pino');
+const path = require('path');
 const fs = require('fs');
 
 const TW_CONSUMER_KEY = '3nVuSoBZnx6U4vzUxf5w'
@@ -21,9 +22,11 @@ const log = pino({
     }
 })
 
+const accountPath = path.join(process.env.DATA_PATH, 'accounts.json')
+
 let accounts
 try {
-    accounts = JSON.parse(fs.readFileSync('accounts.json').toString("utf-8"))
+    accounts = JSON.parse(fs.readFileSync(accountPath).toString("utf-8"))
 } catch (err) {
     accounts = []
 }
@@ -166,7 +169,7 @@ async function loop() {
         if (accounts.length > MAX_ACCOUNTS) {
             accounts.shift()
         }
-        fs.writeFileSync('accounts.json', JSON.stringify(accounts))
+        fs.writeFileSync(accountPath, JSON.stringify(accounts))
         log.debug(`...successfully fetched guest account, next loop in ${LOOP_INTERVAL_MS} millis`)
         setTimeout(loop, LOOP_INTERVAL_MS)
     } else {
@@ -186,6 +189,6 @@ server.get('/guest-accounts', function(req, res, next) {
     next();
 });
 
-server.listen(8080, function() {
+server.listen(3000, function() {
     console.log('%s listening at %s', server.name, server.url);
 });

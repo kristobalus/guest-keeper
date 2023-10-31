@@ -3,11 +3,16 @@ version: '3.8'
 networks:
   app:
 
+volumes:
+  quest-account-data:
+
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: kristobalus/guest-keeper:1.0.1
     entrypoint: npm run start
+    environment:
+      DATA_DIR: "/data"
+    ports:
+      - "80:3000"
     networks:
       - app
