@@ -166,10 +166,13 @@ async function loop() {
 
     if (account) {
         log.debug({ account }, `account fetched`)
+
         accounts.push(account)
+
         if (accounts.length > MAX_ACCOUNTS) {
             accounts.shift()
         }
+
         try {
             fs.writeFileSync(accountPath, JSON.stringify(accounts))
         } catch (err) {
@@ -177,9 +180,11 @@ async function loop() {
         }
 
         log.debug(`...successfully fetched guest account, next loop in ${LOOP_INTERVAL_MS} millis`)
+
         setTimeout(loop, LOOP_INTERVAL_MS)
     } else {
         log.debug(`...failed to fetch account, next loop in ${BACKOFF_INTERVAL} millis`)
+
         setTimeout(loop, BACKOFF_INTERVAL)
     }
 }
