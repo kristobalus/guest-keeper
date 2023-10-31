@@ -23,6 +23,7 @@ const log = pino({
 })
 
 const accountPath = path.join(process.env.DATA_PATH, 'accounts.json')
+console.log(accountPath)
 
 let accounts
 try {
@@ -169,7 +170,12 @@ async function loop() {
         if (accounts.length > MAX_ACCOUNTS) {
             accounts.shift()
         }
-        fs.writeFileSync(accountPath, JSON.stringify(accounts))
+        try {
+            fs.writeFileSync(accountPath, JSON.stringify(accounts))
+        } catch (err) {
+            log.warn(err)
+        }
+
         log.debug(`...successfully fetched guest account, next loop in ${LOOP_INTERVAL_MS} millis`)
         setTimeout(loop, LOOP_INTERVAL_MS)
     } else {

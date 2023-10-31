@@ -4,7 +4,7 @@ networks:
   app:
 
 volumes:
-  quest-account-data:
+  guest-account-data:
 
 services:
   app:
@@ -12,6 +12,8 @@ services:
     entrypoint: npm run start
     environment:
       DATA_DIR: "/data"
+    volumes:
+      - guest-account-data:/data
     ports:
       - "80:3000"
     networks:
