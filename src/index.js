@@ -22,7 +22,7 @@ const log = pino({
     }
 })
 
-const accountPath = path.join(process.env.DATA_PATH, 'accounts.json')
+const accountPath = path.join(process.env.DATA_PATH ?? "/data", 'accounts.json')
 console.log(accountPath)
 
 let accounts
@@ -189,10 +189,6 @@ async function loop() {
     }
 }
 
-(async () => {
-    await loop()
-})().catch(err => console.log(err))
-
 const server = restify.createServer();
 
 server.get('/guest-accounts', function(req, res, next) {
@@ -203,3 +199,7 @@ server.get('/guest-accounts', function(req, res, next) {
 server.listen(3000, function() {
     console.log('%s listening at %s', server.name, server.url);
 });
+
+(async () => {
+    await loop()
+})().catch(err => console.log(err))

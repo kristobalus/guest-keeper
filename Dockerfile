@@ -7,3 +7,4 @@ WORKDIR /opt
 RUN npm install
 
 COPY ./src /opt/src
+ENTRYPOINT ["npm", "run", "start"]

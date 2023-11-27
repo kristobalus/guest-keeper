@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for guest-keeper on 2023-11-28T02:30:16+06:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "guest-keeper"
+primary_region = "waw"
+
+[build]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = false
+  min_machines_running = 0
+  processes = ["app"]
+
+[mounts]
+  source="guest_account_data"
+  destination="/data"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024
