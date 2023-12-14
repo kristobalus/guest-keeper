@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE=kristobalus/guest-keeper:1.0.1
+IMAGE=kristobalus/guest-keeper:1.0.2
 echo "building image $IMAGE..."
 
 docker build -t "$IMAGE" -f ./Dockerfile \
