@@ -17,9 +17,9 @@ primary_region = "waw"
   min_machines_running = 0
   processes = ["app"]
 
-# [mounts]
-#   source="guest_account_data"
-#  destination="/data"
+[mounts]
+  source="guest_account_data"
+  destination="/data"
 
 [[vm]]
   cpu_kind = "shared"
